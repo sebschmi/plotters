@@ -1,11 +1,16 @@
 /// The quartiles
 #[derive(Clone, Debug)]
 pub struct Quartiles {
-    lower_fence: f64,
-    lower: f64,
-    median: f64,
-    upper: f64,
-    upper_fence: f64,
+    /// Minimum value.
+    pub lower_fence: f64,
+    /// 1st quartile.
+    pub lower: f64,
+    /// 2nd quartile (= median).
+    pub median: f64,
+    /// 3rd quartile.
+    pub upper: f64,
+    /// Maximum value.
+    pub upper_fence: f64,
 }
 
 impl Quartiles {
@@ -50,9 +55,8 @@ impl Quartiles {
         let lower = Quartiles::percentile_of_sorted(&s, 25_f64);
         let median = Quartiles::percentile_of_sorted(&s, 50_f64);
         let upper = Quartiles::percentile_of_sorted(&s, 75_f64);
-        let iqr = upper - lower;
-        let lower_fence = lower - 1.5 * iqr;
-        let upper_fence = upper + 1.5 * iqr;
+        let lower_fence = (*s.first().unwrap()).into();
+        let upper_fence = (*s.last().unwrap()).into();
         Self {
             lower_fence,
             lower,
@@ -71,7 +75,7 @@ impl Quartiles {
     ///
     /// let quartiles = Quartiles::new(&[7, 15, 36, 39, 40, 41]);
     /// let values = quartiles.values();
-    /// assert_eq!(values, [-9.0, 20.25, 37.5, 39.75, 69.0]);
+    /// assert_eq!(values, [7.0, 20.25, 37.5, 39.75, 41.0]);
     /// ```
     pub fn values(&self) -> [f32; 5] {
         [
@@ -117,11 +121,11 @@ mod test {
         );
         assert_eq!(
             Quartiles::new(&[10, 20]).values(),
-            [5.0, 12.5, 15.0, 17.5, 25.0]
+            [10.0, 12.5, 15.0, 17.5, 20.0]
         );
         assert_eq!(
             Quartiles::new(&[10, 20, 30]).values(),
-            [0.0, 15.0, 20.0, 25.0, 40.0]
+            [10.0, 15.0, 20.0, 25.0, 30.0]
         );
     }
 }
