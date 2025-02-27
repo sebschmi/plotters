@@ -390,6 +390,7 @@ fn test_dotted_path_element() {
 }
 
 /// A rectangle element
+#[derive(Debug)]
 pub struct Rectangle<Coord> {
     points: [Coord; 2],
     style: ShapeStyle,
